@@ -35,5 +35,6 @@ YUV420Frame ImageConverter::convertBMPToYUV420(const BMP &bmpFile)
         }
     }
 
+    std::cout << "Successfully converted BMP to YUV420!" << std::endl;
     return yuvFrame;
 }

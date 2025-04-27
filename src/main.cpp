@@ -7,31 +7,36 @@
 
 int main(int argc, char* argv[])
 {
-    if (argc < 4)
+    if (argc < 6)
     {
-        std::cerr << "Usage: " << argv[0] << " <bmpFileName>" << " <inputYUVFileName>" << " <resultYUVFileName>" << std::endl;
+        std::cerr << "Usage: " << argv[0] << " <bmpFileName>" << " <inputYUVFileName>" << " <yuvFilewidth>" << " <yuvFileHeight>" << " <resultYUVFileName>" << std::endl;
         return 1;
     }
     
     
     std::string bmpFileName = argv[1];
     std::string yuvFileName = argv[2];
-    std::string resultFilename = argv[3];
+    int yuvFileWidth = std::stoi(argv[3]);
+    int yuvFileHeight = std::stoi(argv[4]);
+    std::string resultFilename = argv[5];
     
 
     try
     {
-        YUV420 yuv(yuvFileName, 352, 288);
-    BMP bmp(bmpFileName);
+        YUV420 yuv(yuvFileName, yuvFileWidth, yuvFileHeight);
+        BMP bmp(bmpFileName);
 
-    YUV420Frame yuvFrame = ImageConverter::convertBMPToYUV420(bmp);
+        YUV420Frame yuvFrame = ImageConverter::convertBMPToYUV420(bmp);
 
-    for(auto& frame : yuv.getFrames())
-    {
-        OverlayProcessor::overlay(frame, yuvFrame, 0, 0);
-    }
-    std::cout << "Overlaying finished" << std::endl;
-    yuv.save(resultFilename);
+        int counter = 0;
+        for(auto& frame : yuv.getFrames())
+        {
+            OverlayProcessor::overlay(frame, yuvFrame, 0, 0);
+            std:: cout << "\rFrames processed: " << ++counter << " / " << yuv.getFrames().size() << std::flush;
+        }
+        std:: cout << std::endl;
+        
+        yuv.save(resultFilename);
     }
     catch(const std::exception& e)
     {

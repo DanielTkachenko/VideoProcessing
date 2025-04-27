@@ -11,7 +11,6 @@ YUV420::YUV420(const std::string &filename, int width, int height) : width(width
     }
     size_t frameSize = width * height;
     size_t chromaSize = (width / 2) * (height / 2);
-    std::cout << "Loading YUV file... 2" << std::endl;
     while (true)
     {
         YUV420Frame frame;
@@ -30,7 +29,7 @@ YUV420::YUV420(const std::string &filename, int width, int height) : width(width
             break;
     }
     yuvFile.close();
-    std::cout << "YUV file loaded successfully." << frames.size() << std::endl;
+    std::cout << "YUV file loaded successfully." << std::endl;
 }
 
 void YUV420::save(const std::string &filename)
