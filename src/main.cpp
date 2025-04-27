@@ -12,17 +12,15 @@ int main(int argc, char* argv[])
         std::cerr << "Usage: " << argv[0] << " <bmpFileName>" << " <inputYUVFileName>" << " <yuvFilewidth>" << " <yuvFileHeight>" << " <resultYUVFileName>" << std::endl;
         return 1;
     }
-    
-    
-    std::string bmpFileName = argv[1];
-    std::string yuvFileName = argv[2];
-    int yuvFileWidth = std::stoi(argv[3]);
-    int yuvFileHeight = std::stoi(argv[4]);
-    std::string resultFilename = argv[5];
-    
 
     try
     {
+        std::string bmpFileName = argv[1];
+        std::string yuvFileName = argv[2];
+        int yuvFileWidth = std::stoi(argv[3]);
+        int yuvFileHeight = std::stoi(argv[4]);
+        std::string resultFilename = argv[5];
+
         YUV420 yuv(yuvFileName, yuvFileWidth, yuvFileHeight);
         BMP bmp(bmpFileName);
 
