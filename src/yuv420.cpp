@@ -22,7 +22,8 @@ YUV420::YUV420(const std::string &filename, int width, int height) : width(width
         yuvFile.read(reinterpret_cast<char*>(frame.yPlane.data()), frameSize);
         yuvFile.read(reinterpret_cast<char*>(frame.uPlane.data()), chromaSize);
         yuvFile.read(reinterpret_cast<char*>(frame.vPlane.data()), chromaSize);
-        
+        frame.width = width;
+        frame.height = height;
         frames.push_back(std::move(frame));
 
         if (yuvFile.eof())
@@ -30,41 +31,6 @@ YUV420::YUV420(const std::string &filename, int width, int height) : width(width
     }
     yuvFile.close();
     std::cout << "YUV file loaded successfully." << frames.size() << std::endl;
-}
-
-void YUV420::overlayPicture(const BMP &picture)
-{
-    std::cout << "Overlaying picture..." << std::endl;
-    if (picture.getWidth() > width || picture.getHeight() > height)
-    {
-        std::cerr << "Overlay position out of bounds." << std::endl;
-        return;
-    }
-
-    if(picture.getWidth() > width || picture.getHeight() > height)
-    {
-        std::cerr << "Picture size exceeds YUV frame size." << std::endl;
-        return;
-    }
-    int i = 0;
-    std::cout << "Overlaying frame..."  << std::endl;
-    for(auto &frame : frames)
-    {
-        
-        for (int i = 0; i < picture.getHeight(); ++i)
-        {
-            for (int j = 0; j < picture.getWidth(); ++j)
-            {
-                int idx = i*picture.getWidth() + j;
-                int idx_2 = (i/2)*(picture.getWidth()/2) + (j/2);
-                frame.yPlane[i*width + j] = picture.getYUVData().yPlane[i*picture.getWidth() + j];
-                frame.uPlane[(i/2)*(width/2) + (j/2)] = picture.getYUVData().uPlane[(i/2)*(picture.getWidth()/2) + (j/2)];
-                frame.vPlane[(i/2)*(width/2) + (j/2)] = picture.getYUVData().vPlane[(i/2)*(picture.getWidth()/2) + (j/2)];
-            }
-        }
-        
-    }
-    std::cout << "Picture overlayed successfully." << std::endl;
 }
 
 void YUV420::save(const std::string &filename)

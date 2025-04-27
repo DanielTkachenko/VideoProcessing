@@ -1,13 +1,9 @@
 #pragma once
 
-#ifndef BMP_H
-#define BMP_H
-
 #include <vector>
 #include <iostream>
 #include <fstream>
 #include <string>
-#include "yuv420data.h"
 
 #pragma pack(push, 1) // Ensure no padding between struct members
 
@@ -48,17 +44,12 @@ class BMP
 {
 public:
     BMP(const std::string& filename);
-    YUV420Frame getYUVData() const { return yuvData; }
     int getWidth() const { return dibHeader.width; }
     int getHeight() const { return dibHeader.height; }
-    void intoYUV();
+    const std::vector<PixelData>& getRawData() const { return pixelData; }
     void save(const std::string& filename);
-    void saveYUV(const std::string& filename);
 private:
     BMPHeader bmpHeader;
     DIBHeader dibHeader;
     std::vector<PixelData> pixelData;
-    YUV420Frame yuvData;
 };
-
-#endif // BMP_H
