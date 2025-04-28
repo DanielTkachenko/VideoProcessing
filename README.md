@@ -23,3 +23,16 @@
 Бонус 2:
 Оптимизировать преобразование RGB->YUV с помощью набора инструкций SIMD,
 например Intel SSE2 или AVX2 (intrinsics) 
+
+# Инструкция
+Вызвать в консоли исполняемый файл с параметрами по типу: ./videoprocessor.exe bmpFile.bmp yuvVideo.yuv <yuvVideoWidth> <yuvVudeoHeight> outputVideo.yuv
+
+# Результат
+Картинка:
+![image](https://github.com/user-attachments/assets/253c3a5f-c693-4e7b-9b14-cfa20a47a514)
+Видео:
+![image](https://github.com/user-attachments/assets/a44f20e4-a6e2-4af7-bc2f-b71077ecc95c)
+Результат программы:
+![image](https://github.com/user-attachments/assets/b5b9c537-125a-460f-8bce-5bf60afb3b43)
+
+
