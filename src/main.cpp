@@ -4,6 +4,7 @@
 #include "yuv420frame.h"
 #include "overlayprocessor.h"
 #include "imageconverter.h"
+#include "videoimageblender.h"
 
 int main(int argc, char* argv[])
 {
@@ -26,13 +27,7 @@ int main(int argc, char* argv[])
 
         YUV420Frame yuvFrame = ImageConverter::convertBMPToYUV420(bmp);
 
-        int counter = 0;
-        for(auto& frame : yuv.getFrames())
-        {
-            OverlayProcessor::overlay(frame, yuvFrame, 0, 0);
-            std:: cout << "\rFrames processed: " << ++counter << " / " << yuv.getFrames().size() << std::flush;
-        }
-        std:: cout << std::endl;
+        VideoImageBlender::blend(yuv, yuvFrame);
         
         yuv.save(resultFilename);
     }

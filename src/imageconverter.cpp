@@ -49,7 +49,8 @@ YUV420Frame ImageConverter::convertBMPToYUV420(const BMP &bmpFile, int numThread
         threads.emplace_back(std::thread(&convertChunk, std::ref(rawData), std::ref(yuvFrame), startY, endY, width));
     }
 
-    for (auto& t : threads) {
+    for (auto& t : threads) 
+    {
         t.join();
     }
 
