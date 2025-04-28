@@ -8,6 +8,7 @@ project(VideoProcessing VERSION 1.0)
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+
 # Include directories
 include_directories(${CMAKE_SOURCE_DIR}/include)
 

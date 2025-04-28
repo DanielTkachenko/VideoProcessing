@@ -5,7 +5,7 @@
 #include <fstream>
 #include <string>
 
-#pragma pack(push, 1) // Ensure no padding between struct members
+#pragma pack(push, 1)
 
 struct BMPHeader
 {

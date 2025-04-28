@@ -2,7 +2,6 @@
 #include "bmp.h"
 #include "yuv420.h"
 #include "yuv420frame.h"
-#include "overlayprocessor.h"
 #include "imageconverter.h"
 #include "videoimageblender.h"
 
