@@ -1,22 +1,12 @@
 #include "imageconverter.h"
+#include <vector>
+#include <thread>
 
-YUV420Frame ImageConverter::convertBMPToYUV420(const BMP &bmpFile)
+void convertChunk(const std::vector<PixelData> &rawData, YUV420Frame &yuvFrame, int startY, int endY, int width)
 {
-    std::cout << "Converting BMP to YUV420 format..." << std::endl;
-    
-    YUV420Frame yuvFrame;
-    int width = bmpFile.getWidth();
-    int height = bmpFile.getHeight();
-    yuvFrame.width = width;
-    yuvFrame.height = height;
-    const std::vector<PixelData>& rawData = bmpFile.getRawData();
-    yuvFrame.yPlane.resize(width * height);
-    yuvFrame.uPlane.resize((width / 2) * (height / 2));
-    yuvFrame.vPlane.resize((width / 2) * (height / 2));
-
-    for(int i = 0; i < height; ++i)
+    for(size_t i = startY; i < endY; ++i)
     {
-        for (int j = 0; j < width; ++j)
+        for (size_t j = 0; j < width; ++j)
         {
             PixelData pixel = rawData[i * width + j];
 
@@ -34,7 +24,36 @@ YUV420Frame ImageConverter::convertBMPToYUV420(const BMP &bmpFile)
             }
         }
     }
+}
+
+YUV420Frame ImageConverter::convertBMPToYUV420(const BMP &bmpFile, int numThreads)
+{
+    std::cout << "Converting BMP to YUV420 format..." << std::endl;
+    
+    std::vector<std::thread> threads;
+
+    YUV420Frame yuvFrame;
+    int width = bmpFile.getWidth();
+    int height = bmpFile.getHeight();
+    yuvFrame.width = width;
+    yuvFrame.height = height;
+    const std::vector<PixelData>& rawData = bmpFile.getRawData();
+    yuvFrame.yPlane.resize(width * height);
+    yuvFrame.uPlane.resize((width / 2) * (height / 2));
+    yuvFrame.vPlane.resize((width / 2) * (height / 2));
+
+    for(size_t i = 0; i < numThreads; ++i)
+    {
+        int startY = (height / numThreads) * i;
+        int endY = (i == numThreads - 1) ? height : (height / numThreads) * (i + 1);
+        threads.emplace_back(std::thread(&convertChunk, std::ref(rawData), std::ref(yuvFrame), startY, endY, width));
+    }
+
+    for (auto& t : threads) {
+        t.join();
+    }
 
     std::cout << "Successfully converted BMP to YUV420!" << std::endl;
     return yuvFrame;
 }
+

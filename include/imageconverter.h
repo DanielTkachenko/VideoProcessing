@@ -6,5 +6,5 @@
 class ImageConverter
 {
 public:
-    static YUV420Frame convertBMPToYUV420(const BMP &bmpFile);
+    static YUV420Frame convertBMPToYUV420(const BMP &bmpFile, int numThreads = 4);
 };
