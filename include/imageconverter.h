@@ -1,5 +1,5 @@
 #pragma once
-
+#include <cstdint>
 #include "bmp.h"
 #include "yuv420frame.h"
 
